@@ -186,8 +186,13 @@ while(cond){
     let userInput = readline.question("select one from these three statements:\n 1. Take Test\n 2. Generate Result\n 3. View Students Result\n 4. display classwise result\n 5. Exit\n");
     if(userInput == 1){
         takeTest();
+        generateResult();
     }
     if(userInput == 2){
+        if(students[0].test_score.length == 0){
+            console.log("students haven't taken the test, please take the test first");
+            continue;
+        }
         generateResult();
     }
     if(userInput == 3){
@@ -230,8 +235,8 @@ function generateResult(){
         
         });
         percentage = Math.round((totalMarks/300) * 100);
-        obj.marks = totalMarks;
-        obj.percentage = percentage;
+        obj.Total = totalMarks;
+        obj.Percentage = percentage;
     });
 
     console.log("Results are generated\n");
@@ -242,7 +247,7 @@ function generateResult(){
 // displaying students results funciton
 
 function viewresults(){
-    console.table(students,["Name","Roll_no","Class", "Gender","marks","percentage"]);
+    console.table(students,["Name","Roll_no","Class", "Gender","Total","Percentage"]);
 }
 
 // displaying class wise results
@@ -260,7 +265,7 @@ function displayClassWise(){
     //printing the details of the students class wise using console.table 
 
     for(let cls of classes){
-        console.table(students.filter((obj)=> obj.Class == cls),["Roll_no","Name","Class","Gender","marks","percentage"]);
+        console.table(students.filter((obj)=> obj.Class == cls),["Roll_no","Name","Class","Gender","Tarks","Percentage"]);
     }
 
 }
