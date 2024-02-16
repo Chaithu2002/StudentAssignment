@@ -183,7 +183,7 @@ let students = [
 
 let cond = true;
 while(cond){
-    let userInput = readline.question("select one from these three statements:\n 1. Take Test\n 2. Generate Result\n 3. View Students Result\n 4. Exit\n");
+    let userInput = readline.question("select one from these three statements:\n 1. Take Test\n 2. Generate Result\n 3. View Students Result\n 4. display classwise result\n 5. Exit\n");
     if(userInput == 1){
         takeTest();
     }
@@ -194,6 +194,9 @@ while(cond){
         viewresults();
     }
     if(userInput == 4){
+        displayClassWise();
+    }
+    if(userInput == 5){
         console.log("Thank you");
         cond = false;
     }
@@ -240,4 +243,24 @@ function generateResult(){
 
 function viewresults(){
     console.table(students,["Name","Roll_no","Class", "Gender","marks","percentage"]);
+}
+
+// displaying class wise results
+
+function displayClassWise(){
+    let classValue = students[0].Class;    //storing default first object class value for checking other class values
+    let classes = [classValue];
+    students.forEach((obj)=>{
+        if(obj.Class != classValue ){       //for loop for iterating through each obj and if any class value != current classValue we are pushing new number into classes and updating the classValue
+            classes.push(obj.Class);
+            classValue = obj.Class;
+        }
+    })
+
+    //printing the details of the students class wise using console.table 
+
+    for(let cls of classes){
+        console.table(students.filter((obj)=> obj.Class == cls),["Roll_no","Name","Class","Gender","marks","percentage"]);
+    }
+
 }
