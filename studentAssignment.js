@@ -218,7 +218,7 @@ function takeTest(){
 
 function generateResult(){
     students.forEach((obj)=>{
-        obj.result = [];                //added a property result for each student with value empty array inorder to store marks and percentage 
+
         let totalMarks = 0;
         let percentage = 0;
         let array = obj.test_score;
@@ -227,7 +227,8 @@ function generateResult(){
         
         });
         percentage = Math.round((totalMarks/300) * 100);
-        obj.result.push({marks: totalMarks, percent: percentage});   //pushing an object with key:value as marks and percentage inside the result property.
+        obj.marks = totalMarks;
+        obj.percentage = percentage;
     });
 
     console.log("Results are generated\n");
@@ -238,20 +239,5 @@ function generateResult(){
 // displaying students results funciton
 
 function viewresults(){
-    let userInput = readline.question("Enter the roll no above 500 and below 906:");
-
-    students.forEach((obj)=>{
-        let array = obj.result;
-        let marks = obj.result[0].marks;
-        let percentage = obj.result[0].percent;
-
-        if(array.length == 0){
-            console.log("student has not taken the test");
-            console.log("would you like you take the test again?");
-        }
-        else if(obj.Roll_no == userInput){ 
-            console.log(`RollNO: ${userInput} Name: ${obj.Name} Class: ${obj.Class} Gender: ${obj.Gender} Marks: ${marks} Percentage: ${percentage}`);              
-        } 
-        
-    });
+    console.table(students,["Name","Roll_no","Class", "Gender","marks","percentage"]);
 }
