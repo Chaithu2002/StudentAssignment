@@ -183,29 +183,48 @@ let students = [
 
 let cond = true;
 while(cond){
-    let userInput = readline.question("select one from these three statements:\n 1. Take Test\n 2. Generate Result\n 3. View Students Result\n 4. display classwise result\n 5. Detail Analysis of result\n 6. Exit\n");
+    let userInput = readline.question("select one from these three statements:\n 1. Take Test\n 2. Generate Result\n 3. View Students Result\n 4. display classwise result\n 5. Detail Analysis of result\n 6. View Top Performer\n 7. Exit\n");
     if(userInput == 1){
         takeTest();
         generateResult();
     }
     if(userInput == 2){
         if(students[0].test_score.length == 0){
-            console.log("students haven't taken the test, please take the test first");
+            console.log("students haven't taken the test, please take the test first\n");
             continue;
         }
         generateResult();
     }
     if(userInput == 3){
+        if(students[0].test_score.length == 0){
+            console.log("students haven't taken the test, please take the test first\n");
+            continue;
+        }
         viewresults();
     }
     if(userInput == 4){
+        if(students[0].test_score.length == 0){
+            console.log("students haven't taken the test, please take the test first\n");
+            continue;
+        }
         displayClassWise();
     }
     if(userInput == 5){
+        if(students[0].test_score.length == 0){
+            console.log("students haven't taken the test, please take the test first\n");
+            continue;
+        }
         detailAnalysisOfStudent();
     }
     if(userInput == 6){
-        console.log("Thank you");
+        if(students[0].test_score.length == 0){
+            console.log("students haven't taken the test, please take the test first\n");
+            continue;
+        }
+        topPerformer();
+    }
+    if(userInput == 7){
+        console.log("Thank you\n");
         cond = false;
     }
 
@@ -255,7 +274,7 @@ function viewresults(){
 
 // displaying class wise results
 
-function displayClassWise(){
+function classFilter(){
     let classValue = students[0].Class;    //storing default first object class value for checking other class values
     let classes = [classValue];
     students.forEach((obj)=>{
@@ -271,6 +290,12 @@ function displayClassWise(){
         filteredClasses.push(students.filter((obj)=> obj.Class == cls));
     }
 
+    return filteredClasses;
+}
+
+function displayClassWise(){
+
+    let filteredClasses = classFilter();
     //printing the details of the students class wise using console.table 
 
     //console.log(filteredClasses);
@@ -278,13 +303,11 @@ function displayClassWise(){
         console.table(filteredClasses[obj],["Roll_no","Name","Class","Gender","Total","Percentage"]);
     }
 
-    return filteredClasses;
-
 }
 
 function detailAnalysisOfStudent(){
     let resultArray = [];
-    let classes = displayClassWise();
+    let classes = classFilter();
     let totalMarks = 0;
     let averageTotalMarks = 0;
     let failedStudentsCount = 0;
@@ -370,6 +393,41 @@ function overallGradeForEachClass(averagePercentage){
     else{
         return "F";
     }
+}
+
+function topPerformer(){
+    let filteredClasses = classFilter();
+    let resultArray = [];
+    for(let array of filteredClasses){
+        let eachClassTotals = [];
+        let performers = [];
+        let topPerformer = {};
+        array.forEach((obj)=>{
+            eachClassTotals.push(obj.Total);
+        })
+
+        eachClassTotals.sort();
+        eachClassTotals.reverse();  //sorting the array in descending order
+
+        //while loop for picking the first 3 top performers from each class
+        let index = 0;
+        while(index<3){
+            array.forEach((obj)=>{
+                if(obj.Total == eachClassTotals[index]){
+                    performers.push(obj.Name);
+                }
+                topPerformer.class = obj.Class;
+            });
+            index++;
+        }
+
+        //joining the values in performers list to one value with join method
+        topPerformer.performers = performers.join();
+        resultArray.push(topPerformer);
+    }
+    //consoling the resulting values from the array
+    console.table(resultArray,["class","performers"]);
+
 }
 
 
