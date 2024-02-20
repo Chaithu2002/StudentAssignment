@@ -308,9 +308,7 @@ function displayClassWise(){
 function detailAnalysisOfStudent(){
     let resultArray = [];
     let classes = classFilter();
-    let totalMarks = 0;
     let averageTotalMarks = 0;
-    let failedStudentsCount = 0;
     let eachClass = 0;
 
     for(let array of classes){
@@ -319,6 +317,8 @@ function detailAnalysisOfStudent(){
         let denominator = 0;
         let totalStudents = 0;
         let totalPercentage = 0;
+        let totalMarks = 0;
+        let failedStudentsCount = 0;
         array.forEach((obj)=>{
             totalMarks += obj.Total;
             totalPercentage += obj.Percentage;
@@ -341,6 +341,8 @@ function detailAnalysisOfStudent(){
         resultClassObject.overallGrade = classAverageGrade;
 
         //computing average total marks and adding to object value
+        console.log(totalMarks);
+        console.log(denominator);
         averageTotalMarks = Math.round(totalMarks / denominator);
         resultClassObject.averageTotalMarks = averageTotalMarks;
         // adding average percentage to object value
